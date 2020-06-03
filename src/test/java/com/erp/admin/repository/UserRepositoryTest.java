@@ -27,18 +27,16 @@ public class UserRepositoryTest extends AdminApplicationTests {
         String email = "Test@gmail.com";
         String phone = "010-1111-1111";
         LocalDateTime registeredAt = LocalDateTime.now();
-        LocalDateTime createdAt = LocalDateTime.now();
-        String createdBy = "Admin";
 
-        User user = new User();
-        user.setAccount(account);
-        user.setPassword(password);
-        user.setStatus(status);
-        user.setEmail(email);
-        user.setPhoneNumber(phone);
-        user.setRegisteredAt(registeredAt);
-        user.setCreatedBy(createdBy);
-        user.setCreatedAt(LocalDateTime.now());
+
+        User user = User.builder()
+                .account(account)
+                .password(password)
+                .status(status)
+                .email(email)
+                .phoneNumber(phone)
+                .registeredAt(registeredAt)
+                .build();
 
         User newUser = userRepository.save(user);
         Assert.assertNotNull(newUser);
