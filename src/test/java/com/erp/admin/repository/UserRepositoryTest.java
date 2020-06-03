@@ -1,7 +1,6 @@
 package com.erp.admin.repository;
 
 import com.erp.admin.AdminApplicationTests;
-import com.erp.admin.model.entity.Item;
 import com.erp.admin.model.entity.User;
 import org.apache.tomcat.jni.Local;
 import org.junit.Assert;
@@ -23,69 +22,41 @@ public class UserRepositoryTest extends AdminApplicationTests {
      */
     @Test
     public void create() {
+        String account = "Test01";
+        String password = "Test01";
+        String status = "Registered";
+        String email = "Test@gmail.com";
+        String phone = "010-1111-1111";
+        LocalDateTime registeredAt = LocalDateTime.now();
+        LocalDateTime createdAt = LocalDateTime.now();
+        String createdBy = "Admin";
+
         User user = new User();
-        user.setAccount("TestUser01");
-        user.setEmail("test01@gmail.com");
-        user.setPhoneNumber("010-1111-1111");
-        user.setCreatedBy("admin");
+        user.setAccount(account);
+        user.setPassword(password);
+        user.setStatus(status);
+        user.setEmail(email);
+        user.setPhoneNumber(phone);
+        user.setRegisteredAt(registeredAt);
+        user.setCreatedBy(createdBy);
         user.setCreatedAt(LocalDateTime.now());
 
         User newUser = userRepository.save(user);
-        System.out.println(newUser);
+        Assert.assertNotNull(newUser);
     }
 
     @Test
     @Transactional
     public void read() {
         Optional<User> user = userRepository.findById(1L);
-        user.ifPresent(selectedUser -> {
-
-            selectedUser.getOrderDetailList().stream().forEach(detail -> {
-                Item item = detail.getItem();
-                System.out.println(item);
-            });
-
-        });
+        System.out.println(user);
     }
 
     @Test
     @Transactional
-    public void readAtAccount() {
-        Optional<User> user = userRepository.findByAccount("TestUser01");
-        user.ifPresent(selectedUser -> {
-
-            selectedUser.getOrderDetailList().stream().forEach(detail -> {
-                Item item = detail.getItem();
-                System.out.println(item);
-            });
-
-        });
-    }
-
-    @Test
-    @Transactional
-    public void readAtEmail() {
-        Optional<User> user = userRepository.findByEmail("test01@gmail.com");
-        user.ifPresent(selectedUser -> {
-
-            selectedUser.getOrderDetailList().stream().forEach(detail -> {
-                Item item = detail.getItem();
-                System.out.println(item);
-            });
-        });
-    }
-
-    @Test
-    @Transactional
-    public void readAtAccountAndEmail() {
-        Optional<User> user = userRepository.findByAccountAndEmail("TestUser01", "test01@gmail.com");
-        user.ifPresent(selectedUser -> {
-
-            selectedUser.getOrderDetailList().stream().forEach(detail -> {
-                Item item = detail.getItem();
-                System.out.println(item);
-            });
-        });
+    public void readFindFirstByPhoneNumberOrderByIdDesc() {
+        User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-1111");
+        Assert.assertNotNull(user);
     }
 
     @Test

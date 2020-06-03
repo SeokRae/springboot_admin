@@ -40,4 +40,5 @@ public class User {
     private String createdBy;
 
     private String updatedBy;
+
 }
