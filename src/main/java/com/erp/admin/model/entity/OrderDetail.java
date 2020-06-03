@@ -7,27 +7,21 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class User {
+public class OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String account;
+    private LocalDateTime orderAt;
 
-    private String email;
+    private Long userId;
 
-    private String phoneNumber;
+    private Long itemId;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    private String createdBy;
-
-    private String updatedBy;
 }

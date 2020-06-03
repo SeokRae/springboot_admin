@@ -16,7 +16,7 @@ public class PostController {
      *
      * @return
      */
-    @PostMapping("/postMethod")
+    @PostMapping(value = "/postMethod")
     public SearchParam postMethod(@RequestBody SearchParam searchParam) {
         return searchParam;
     }
