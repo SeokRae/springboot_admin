@@ -1,6 +1,7 @@
 package com.erp.admin.repository;
 
 import com.erp.admin.AdminApplicationTests;
+import com.erp.admin.model.entity.Item;
 import com.erp.admin.model.entity.User;
 import org.apache.tomcat.jni.Local;
 import org.junit.Assert;
@@ -38,8 +39,52 @@ public class UserRepositoryTest extends AdminApplicationTests {
     public void read() {
         Optional<User> user = userRepository.findById(1L);
         user.ifPresent(selectedUser -> {
-            System.out.println("user : " + selectedUser);
-            System.out.println("email : " + selectedUser.getEmail());
+
+            selectedUser.getOrderDetailList().stream().forEach(detail -> {
+                Item item = detail.getItem();
+                System.out.println(item);
+            });
+
+        });
+    }
+
+    @Test
+    @Transactional
+    public void readAtAccount() {
+        Optional<User> user = userRepository.findByAccount("TestUser01");
+        user.ifPresent(selectedUser -> {
+
+            selectedUser.getOrderDetailList().stream().forEach(detail -> {
+                Item item = detail.getItem();
+                System.out.println(item);
+            });
+
+        });
+    }
+
+    @Test
+    @Transactional
+    public void readAtEmail() {
+        Optional<User> user = userRepository.findByEmail("test01@gmail.com");
+        user.ifPresent(selectedUser -> {
+
+            selectedUser.getOrderDetailList().stream().forEach(detail -> {
+                Item item = detail.getItem();
+                System.out.println(item);
+            });
+        });
+    }
+
+    @Test
+    @Transactional
+    public void readAtAccountAndEmail() {
+        Optional<User> user = userRepository.findByAccountAndEmail("TestUser01", "test01@gmail.com");
+        user.ifPresent(selectedUser -> {
+
+            selectedUser.getOrderDetailList().stream().forEach(detail -> {
+                Item item = detail.getItem();
+                System.out.println(item);
+            });
         });
     }
 

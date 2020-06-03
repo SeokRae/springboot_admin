@@ -1,7 +1,9 @@
 package com.erp.admin.repository;
 
 import com.erp.admin.AdminApplicationTests;
+import com.erp.admin.model.entity.Item;
 import com.erp.admin.model.entity.OrderDetail;
+import com.erp.admin.model.entity.User;
 import junit.framework.TestCase;
 import org.hibernate.criterion.Order;
 import org.junit.Assert;
@@ -22,11 +24,15 @@ public class OrderDetailRepositoryTest extends AdminApplicationTests {
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setOrderAt(LocalDateTime.now());
 
+        User user = new User();
+        user.setId(1L);
         // 주문자 설정
-        orderDetail.setUserId(1L);
+        orderDetail.setUser(user);
 
+        Item item = new Item();
+        item.setId(1L);
         // 살품 설정
-        orderDetail.setItemId(1L);
+        orderDetail.setItem(item);
 
         // 데이터 확인
         OrderDetail newOrderDetail = orderDetailRepository.save(orderDetail);

@@ -3,6 +3,7 @@ package com.erp.admin.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString(exclude = {"user", "item"})
 public class OrderDetail {
 
     @Id
@@ -20,8 +22,10 @@ public class OrderDetail {
 
     private LocalDateTime orderAt;
 
-    private Long userId;
+    @ManyToOne // N : 1
+    private User user;
 
-    private Long itemId;
+    @ManyToOne // N : 1
+    private Item item;
 
 }
