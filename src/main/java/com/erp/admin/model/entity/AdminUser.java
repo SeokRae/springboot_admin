@@ -3,17 +3,19 @@ package com.erp.admin.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.criterion.Order;
+import org.hibernate.validator.internal.util.privilegedactions.LoadClass;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-public class User {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class AdminUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +27,13 @@ public class User {
 
     private String status;
 
-    private String email;
+    private String role;
 
-    private String phoneNumber;
+    private LocalDateTime lastLoginAt;
+
+    private LocalDateTime passwordUpdatedAt;
+
+    private int loginFailCount;
 
     private LocalDateTime registeredAt;
 
@@ -35,9 +41,9 @@ public class User {
 
     private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
-
     private String createdBy;
+
+    private LocalDateTime updatedAt;
 
     private String updatedBy;
 }
