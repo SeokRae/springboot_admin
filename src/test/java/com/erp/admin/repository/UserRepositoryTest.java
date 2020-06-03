@@ -2,7 +2,6 @@ package com.erp.admin.repository;
 
 import com.erp.admin.AdminApplicationTests;
 import com.erp.admin.model.entity.User;
-import org.apache.tomcat.jni.Local;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +56,24 @@ public class UserRepositoryTest extends AdminApplicationTests {
     public void readFindFirstByPhoneNumberOrderByIdDesc() {
         User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-1111");
         Assert.assertNotNull(user);
+        user.getOrderGroupList().forEach(orderGroup -> {
+            System.out.println("주문 정보");
+            System.out.println(orderGroup.getRevAddress());
+            System.out.println(orderGroup.getRevName());
+            System.out.println(orderGroup.getTotalPrice());
+            System.out.println(orderGroup.getTotalQuantity());
+
+            orderGroup.getOrderDetailList().forEach(orderDetail -> {
+                System.out.println("주문 상세 ");
+                System.out.println(orderDetail.getItem().getPartner().getName());
+                System.out.println(orderDetail.getItem().getPartner().getCategory().getTitle());
+                System.out.println(orderDetail.getItem().getName());
+                System.out.println(orderDetail.getItem().getPartner().getCallCenter());
+                System.out.println(orderDetail.getStatus());
+                System.out.println(orderDetail.getArrivalDate());
+
+            });
+        });
     }
 
     @Test
@@ -85,11 +102,9 @@ public class UserRepositoryTest extends AdminApplicationTests {
     public void delete() {
         Optional<User> user = userRepository.findById(1L);
 
-        Assert.assertTrue(user.isPresent());;
+        Assert.assertTrue(user.isPresent());
 
-        user.ifPresent(selectedUser -> {
-            userRepository.delete(selectedUser);
-        });
+        user.ifPresent(selectedUser -> userRepository.delete(selectedUser));
 
         Optional<User> deletedUser = userRepository.findById(2L);
         Assert.assertFalse(deletedUser.isPresent());

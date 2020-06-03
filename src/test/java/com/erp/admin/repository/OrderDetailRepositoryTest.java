@@ -33,12 +33,12 @@ public class OrderDetailRepositoryTest extends AdminApplicationTests {
         User user = new User();
         user.setId(1L);
         // 주문자 설정
-        orderDetail.setOrderGroupId(1L);
+//        orderDetail.setOrderGroupId(1L);
 
         Item item = new Item();
         item.setId(1L);
         // 살품 설정
-        orderDetail.setItemId(1L);
+//        orderDetail.setItemId(1L);
 
         // 데이터 확인
         OrderDetail newOrderDetail = orderDetailRepository.save(orderDetail);

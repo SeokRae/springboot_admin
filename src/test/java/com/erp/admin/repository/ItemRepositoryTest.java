@@ -32,7 +32,7 @@ public class ItemRepositoryTest extends AdminApplicationTests {
         item.setRegisteredAt(registeredAt);
         item.setCreatedAt(createdAt);
         item.setCreatedBy("partner01");
-        item.setPartnerId(1L);
+//        item.setPartnerId(1L);
 
         Item newItem = itemRepository.save(item);
         Assert.assertNotNull(newItem);
