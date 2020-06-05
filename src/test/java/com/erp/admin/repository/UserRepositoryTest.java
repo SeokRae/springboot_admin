@@ -2,6 +2,7 @@ package com.erp.admin.repository;
 
 import com.erp.admin.AdminApplicationTests;
 import com.erp.admin.model.entity.User;
+import com.erp.admin.model.status.UserStatus;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class UserRepositoryTest extends AdminApplicationTests {
         User user = User.builder()
                 .account(account)
                 .password(password)
-                .status(status)
+                .status(UserStatus.REGISTERED)
                 .email(email)
                 .phoneNumber(phone)
                 .registeredAt(registeredAt)

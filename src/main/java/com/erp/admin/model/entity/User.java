@@ -1,5 +1,6 @@
 package com.erp.admin.model.entity;
 
+import com.erp.admin.model.status.UserStatus;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.criterion.Order;
@@ -31,7 +32,8 @@ public class User {
 
     private String password;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
 
     private String email;
 

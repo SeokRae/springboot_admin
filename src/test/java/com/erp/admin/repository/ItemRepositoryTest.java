@@ -2,11 +2,14 @@ package com.erp.admin.repository;
 
 import com.erp.admin.AdminApplicationTests;
 import com.erp.admin.model.entity.Item;
+import com.erp.admin.model.status.ItemStatus;
+import com.erp.admin.model.status.UserStatus;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -26,13 +29,12 @@ public class ItemRepositoryTest extends AdminApplicationTests {
         item.setTitle("삼성 노트북 8");
         item.setName("노트북");
         item.setContent("델 노트북");
-        item.setPrice(900000);
+        item.setPrice(BigDecimal.valueOf(900000));
         item.setBrandName("삼성");
-        item.setStatus("unregistered");
+        item.setStatus(ItemStatus.REGISTERED);
         item.setRegisteredAt(registeredAt);
         item.setCreatedAt(createdAt);
         item.setCreatedBy("partner01");
-//        item.setPartnerId(1L);
 
         Item newItem = itemRepository.save(item);
         Assert.assertNotNull(newItem);

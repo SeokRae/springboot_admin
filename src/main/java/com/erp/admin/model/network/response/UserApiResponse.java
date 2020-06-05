@@ -1,18 +1,19 @@
 package com.erp.admin.model.network.response;
 
+import com.erp.admin.model.status.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserAPIResponse {
+public class UserApiResponse {
 
     private Long id;
 
@@ -20,7 +21,7 @@ public class UserAPIResponse {
 
     private String password;
 
-    private String status;
+    private UserStatus status;
 
     private String email;
 
@@ -29,5 +30,9 @@ public class UserAPIResponse {
     private LocalDateTime registeredAt;
 
     private LocalDateTime unregisteredAt;
+
+    private List<OrderGroupApiResponse> orderGroupApiResponseList;
+
+    private List<ItemApiResponse> itemApiResponseList;
 
 }

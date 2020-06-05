@@ -2,6 +2,9 @@ package com.erp.admin.repository;
 
 import com.erp.admin.AdminApplicationTests;
 import com.erp.admin.model.entity.OrderGroup;
+import com.erp.admin.model.status.OrderStatus;
+import com.erp.admin.model.status.OrderType;
+import com.erp.admin.model.status.PaymentType;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,9 +23,9 @@ public class OrderGroupRepositoryTest extends AdminApplicationTests {
     @Test
     public void create() {
         OrderGroup orderGroup = new OrderGroup();
-        orderGroup.setStatus("complete");
-        orderGroup.setOrderType("All");
-        orderGroup.setPaymentType("card");
+        orderGroup.setStatus(OrderStatus.ORDERING);
+        orderGroup.setOrderType(OrderType.ALL);
+        orderGroup.setPaymentType(PaymentType.CARD);
         orderGroup.setRevAddress("Seoul");
         orderGroup.setRevName("익명");
         orderGroup.setTotalPrice(BigDecimal.valueOf(900000));

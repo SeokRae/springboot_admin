@@ -1,30 +1,29 @@
 package com.erp.admin.service;
 
-import com.erp.admin.controller.ItemAPIController;
-import com.erp.admin.interfaces.CrudInterface;
 import com.erp.admin.model.entity.Item;
 import com.erp.admin.model.network.Header;
-import com.erp.admin.model.network.request.ItemAPIRequest;
-import com.erp.admin.model.network.response.ItemAPIResponse;
-import com.erp.admin.repository.ItemRepository;
+import com.erp.admin.model.network.Pagination;
+import com.erp.admin.model.network.request.ItemApiRequest;
+import com.erp.admin.model.network.response.ItemApiResponse;
 import com.erp.admin.repository.PartnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class ItemService implements CrudInterface<ItemAPIRequest, ItemAPIResponse> {
-
-    @Autowired
-    private ItemRepository itemRepository;
+public class ItemService extends BaseService<ItemApiRequest, ItemApiResponse, Item> {
 
     @Autowired
     private PartnerRepository partnerRepository;
 
     @Override
-    public Header<ItemAPIResponse> create(Header<ItemAPIRequest> request) {
-        ItemAPIRequest body = request.getData();
+    public Header<ItemApiResponse> create(Header<ItemApiRequest> request) {
+        ItemApiRequest body = request.getData();
         Item item = Item.builder()
                 .status(body.getStatus())
                 .name(body.getName())
@@ -35,22 +34,23 @@ public class ItemService implements CrudInterface<ItemAPIRequest, ItemAPIRespons
                 .registeredAt(LocalDateTime.now())
                 .partner(partnerRepository.getOne(body.getPartnerId()))
                 .build();
-        Item newItem = itemRepository.save(item);
+        Item newItem = baseRepository.save(item);
 
-        return response(newItem);
+        return Header.OK(response(newItem));
     }
 
     @Override
-    public Header<ItemAPIResponse> read(Long id) {
-        return itemRepository.findById(id)
+    public Header<ItemApiResponse> read(Long id) {
+        return baseRepository.findById(id)
                 .map(this::response)
+                .map(Header::OK)
                 .orElseGet(() -> Header.ERROR("아이템이 없습니다."));
     }
 
     @Override
-    public Header<ItemAPIResponse> update(Header<ItemAPIRequest> request) {
-        ItemAPIRequest body = request.getData();
-        return itemRepository.findById(body.getId())
+    public Header<ItemApiResponse> update(Header<ItemApiRequest> request) {
+        ItemApiRequest body = request.getData();
+        return baseRepository.findById(body.getId())
                 .map(item -> {
                     item
                             .setStatus(body.getStatus())
@@ -63,23 +63,41 @@ public class ItemService implements CrudInterface<ItemAPIRequest, ItemAPIRespons
                             .setUnregisteredAt(body.getUnregisteredAt());
                     return item;
                 })
-                .map(newEntity -> itemRepository.save(newEntity)) // db로 update
-                .map(this::response) // response로 Header + item 반환
+                .map(newEntity -> baseRepository.save(newEntity))
+                .map(this::response)
+                .map(Header::OK)
                 .orElseGet(()-> Header.ERROR("데이터 없음")); // 데이터 예외 처리
     }
 
     @Override
     public Header<?> delete(Long id) {
-        return itemRepository.findById(id)
+        return baseRepository.findById(id)
                 .map(item -> {
-                    itemRepository.delete(item);
+                    baseRepository.delete(item);
                     return Header.OK();
                 })
                 .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
-    private Header<ItemAPIResponse> response(Item item) {
-        ItemAPIResponse body = ItemAPIResponse.builder()
+    @Override
+    public Header<List<ItemApiResponse>> search(Pageable pageable) {
+        Page<Item> items = baseRepository.findAll(pageable);
+
+        List<ItemApiResponse> itemApiResponseList = items.stream()
+                .map(this::response)
+                .collect(Collectors.toList());
+
+        Pagination pagination = Pagination.builder()
+                .totalPages(items.getTotalPages())
+                .totalElements(items.getTotalElements())
+                .currentPage(items.getNumber())
+                .currentOfElements(items.getNumberOfElements())
+                .build();
+        return Header.OK(itemApiResponseList);
+    }
+
+    public ItemApiResponse response(Item item) {
+        return ItemApiResponse.builder()
                 .id(item.getId())
                 .status(item.getStatus())
                 .name(item.getName())
@@ -91,6 +109,5 @@ public class ItemService implements CrudInterface<ItemAPIRequest, ItemAPIRespons
                 .unregisteredAt(item.getUnregisteredAt())
                 .partnerId(item.getPartner().getId())
                 .build();
-        return Header.OK(body);
     }
 }

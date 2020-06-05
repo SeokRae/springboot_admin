@@ -1,36 +1,33 @@
 package com.erp.admin.model.network.request;
 
+import com.erp.admin.model.status.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ItemAPIRequest {
+public class UserApiRequest {
 
     private Long id;
 
-    private String status;
+    private String account;
 
-    private String name;
+    private String password;
 
-    private String title;
+    private String email;
 
-    private String content;
+    private UserStatus status;
 
-    private BigDecimal price;
-
-    private String brandName;
+    private String phoneNumber;
 
     private LocalDateTime registeredAt;
 
     private LocalDateTime unregisteredAt;
 
-    private Long partnerId;
 }
